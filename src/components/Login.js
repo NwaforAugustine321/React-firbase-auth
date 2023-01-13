@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../container/Auth';
 import { toast } from 'react-toastify';
 import {
@@ -14,6 +15,7 @@ import {
 
 const Login = ({ history }) => {
   const auth = getAuth();
+  const path = useHistory();
   const [reload, setReload] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
@@ -24,7 +26,7 @@ const Login = ({ history }) => {
         'recaptcha-container-id',
         {
           size: 'invisible',
-          callback: function (response) {},
+          callback: function(response) {},
         },
         auth
       )
@@ -62,7 +64,8 @@ const Login = ({ history }) => {
             recaptchaVerifier
           );
 
-          history.push(`/otp/${id}/login`);
+          window.location.assign(`/otp/${id}/login`);
+
           window.localStorage.setItem(
             'sessionErrorResolver',
             JSON.stringify(error)
@@ -73,6 +76,8 @@ const Login = ({ history }) => {
         }
       } else if (error.code === 'auth/wrong-password') {
         toast('Wrong password or email');
+      } else {
+        toast(error.message);
       }
     }
   };
@@ -92,7 +97,7 @@ const Login = ({ history }) => {
         recaptchaVerifier
       );
 
-      history.push(`/otp/${id}/signup`);
+      window.location.assign(`/otp/${id}/signup`);
       recaptchaVerifier.clear();
       setReload(true);
     } catch (error) {
@@ -101,7 +106,7 @@ const Login = ({ history }) => {
   };
 
   const handleRedirect = () => {
-    history.push('/signup');
+    window.location.assign(`/signup`);
   };
 
   return (

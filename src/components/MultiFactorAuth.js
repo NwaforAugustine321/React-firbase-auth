@@ -35,13 +35,13 @@ const AccountOTPVerification = ({ history }) => {
           JSON.parse(window.localStorage.getItem('sessionErrorResolver'))
         );
         await resolver.resolveSignIn(multiFactorAssertion);
-        history.push('/');
+        window.location.assign('/');
       } else {
         await multiFactor(currentUser).enroll(
           multiFactorAssertion,
           currentUser.displayName
         );
-        history.push('/');
+        window.location.assign('/');
       }
     } catch (error) {
       toast(error.message);

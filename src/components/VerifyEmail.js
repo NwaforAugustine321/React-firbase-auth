@@ -17,12 +17,12 @@ const VerifyAccount = ({ history }) => {
     if (isSignInWithEmailLink(auth, window.location.href)) {
       const email = window.location.search.split('&')[0].split('=')[1];
       if (!email) {
-        history.push('/login');
+        window.location.assign('/login');
       }
 
       signInWithEmailLink(auth, email, window.location.href)
         .then(() => {
-          history.push('/login');
+          window.location.assign('/login');
         })
         .catch((error) => {
           toast(error.message);
