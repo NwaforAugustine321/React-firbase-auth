@@ -37,7 +37,7 @@ const VerifyAccount = ({ history }) => {
           className='d-flex align-items-center flex-column'
           style={{ width: '60%' }}
         >
-          <h1 className='mb-5'>Thanks for verifying Your account</h1>
+          <h1 className='mb-5'>Click to verify your account</h1>
           <button className='btn btn-primary' onClick={verifyAccountEmail}>
             Verify
           </button>
