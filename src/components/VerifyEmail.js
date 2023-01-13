@@ -1,8 +1,8 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import { withRouter, Redirect } from 'react-router';
-import { AuthContext } from '../container/Auth.js';
-import { useCallback } from 'react/cjs/react.development.js';
+import { AuthContext } from '../container/Auth';
+import { useCallback } from 'react/cjs/react.development';
 import {
   getAuth,
   isSignInWithEmailLink,

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
-import { AuthContext } from '../container/Auth.js';
+import { AuthContext } from '../container/Auth';
 import { toast } from 'react-toastify';
 import {
   getAuth,

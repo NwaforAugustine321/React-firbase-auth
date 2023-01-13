@@ -1,7 +1,7 @@
 import React from 'react';
 import app from '../firbaseConfig';
 import { useContext } from 'react';
-import { AuthContext } from '../container/Auth.js';
+import { AuthContext } from '../container/Auth';
 
 const Home = () => {
   const { currentUser } = useContext(AuthContext);

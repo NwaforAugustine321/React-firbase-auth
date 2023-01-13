@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { withRouter } from 'react-router';
 import { useParams } from 'react-router';
-import { AuthContext } from '../container/Auth.js';
+import { AuthContext } from '../container/Auth';
 import {
   PhoneAuthProvider,
   multiFactor,
