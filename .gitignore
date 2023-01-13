@@ -19,7 +19,7 @@
 .env.production.local
 
 .github
-.package-lock.json
+
 
 
 npm-debug.log*
