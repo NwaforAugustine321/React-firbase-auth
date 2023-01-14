@@ -20,6 +20,7 @@ const Login = ({ history }) => {
   const dispatch = useDispatch();
 
   const [reload, setReload] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
@@ -39,6 +40,7 @@ const Login = ({ history }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setIsFetching(true);
     const { email, password } = event.target.elements;
 
     try {
@@ -48,6 +50,7 @@ const Login = ({ history }) => {
         password.value
       );
       handleOtpSession(currentUser);
+      setIsFetching(false);
     } catch (error) {
       if (error.code === 'auth/multi-factor-auth-required') {
         const resolver = getMultiFactorResolver(auth, error);
@@ -94,6 +97,7 @@ const Login = ({ history }) => {
       } else {
         toast(error.message);
       }
+      setIsFetching(false);
     }
   };
 
@@ -173,7 +177,11 @@ const Login = ({ history }) => {
                 className='btn btn-primary'
                 id='login_button'
               >
-                Login
+                {isFetching ? (
+                  <div className='spinner-border' role='status'></div>
+                ) : (
+                  'Login'
+                )}
               </button>
               <button
                 type='button'

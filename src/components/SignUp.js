@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import { withRouter } from 'react-router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -9,8 +9,11 @@ import {
 } from 'firebase/auth';
 
 const SignUp = ({ history }) => {
+  const [isFetching, setIsFetching] = useState(false);
+
   const handleSignUp = useCallback(async (event) => {
     event.preventDefault();
+    setIsFetching(true);
 
     const { email, password, userName } = event.target.elements;
 
@@ -41,6 +44,7 @@ const SignUp = ({ history }) => {
             toast(error.message);
           });
       });
+      setIsFetching(false);
     } catch (error) {
       toast(error.message);
     }
@@ -107,7 +111,11 @@ const SignUp = ({ history }) => {
               className='btn btn-primary'
               id='signup-button'
             >
-              Submit
+              {isFetching ? (
+                <div className='spinner-border' role='status'></div>
+              ) : (
+                'Submit'
+              )}
             </button>
           </form>
         </div>
