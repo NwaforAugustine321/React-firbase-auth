@@ -5,6 +5,7 @@ import { AuthContext } from '../container/Auth';
 import { updateUser } from '../store/store';
 import React, { useContext, useState, useEffect } from 'react';
 
+
 import {
   getAuth,
   RecaptchaVerifier,
@@ -37,7 +38,6 @@ const Login = ({ history }) => {
     );
     setReload(false);
   }, [reload, auth]);
-  
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -66,30 +66,33 @@ const Login = ({ history }) => {
             session: resolver.session,
           };
 
-          const id = await phoneAuthProvider.verifyPhoneNumber(
-            phoneInfoOptions,
-            recaptchaVerifier
-          );
+          phoneAuthProvider
+            .verifyPhoneNumber(phoneInfoOptions, recaptchaVerifier)
+            .then((id) => {
+              dispatch(
+                updateUser({
+                  status: 'OPT-PROCESSING',
+                  user: {
+                    displayName: '',
+                    email: '',
+                    emailVerified: '',
+                  },
+                })
+              );
 
-          dispatch(
-            updateUser({
-              status: 'OPT-PROCESSING',
-              user: {
-                displayName: '',
-                email: '',
-                emailVerified: '',
-              },
+              window.location.assign(`/otp/${id}/login`);
+
+              window.localStorage.setItem(
+                'sessionErrorResolver',
+                JSON.stringify(error)
+              );
+
+              recaptchaVerifier.clear();
             })
-          );
-
-          window.location.assign(`/otp/${id}/login`);
-
-          window.localStorage.setItem(
-            'sessionErrorResolver',
-            JSON.stringify(error)
-          );
-
-          recaptchaVerifier.clear();
+            .catch((error) => {
+              toast(error.message);
+              setIsFetching(false);
+            });
         } else {
           // Unsupported second factor.
         }
@@ -98,6 +101,7 @@ const Login = ({ history }) => {
       } else {
         toast(error.message);
       }
+
       setIsFetching(false);
     }
   };

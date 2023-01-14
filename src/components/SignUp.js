@@ -42,6 +42,7 @@ const SignUp = ({ history }) => {
           })
           .catch((error) => {
             toast(error.message);
+             setIsFetching(false);
           });
       });
       setIsFetching(false);
