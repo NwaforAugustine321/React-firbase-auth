@@ -1,8 +1,6 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import { withRouter, Redirect } from 'react-router';
-import { AuthContext } from '../container/Auth';
-import { useCallback } from 'react/cjs/react.development';
+import { withRouter } from 'react-router';
 import {
   getAuth,
   isSignInWithEmailLink,
@@ -11,18 +9,17 @@ import {
 
 const VerifyAccount = ({ history }) => {
   const auth = getAuth();
-  const { currentUser } = useCallback(AuthContext);
 
   const verifyAccountEmail = () => {
     if (isSignInWithEmailLink(auth, window.location.href)) {
       const email = window.location.search.split('&')[0].split('=')[1];
       if (!email) {
-        window.location.assign('/login');
+        history.push('/login');
       }
 
       signInWithEmailLink(auth, email, window.location.href)
         .then(() => {
-          window.location.assign('/login');
+          history.push('/login');
         })
         .catch((error) => {
           toast(error.message);
@@ -30,7 +27,7 @@ const VerifyAccount = ({ history }) => {
     }
   };
 
-  return !currentUser || !currentUser.emailVerified ? (
+  return (
     <div className='container-sm vh-100'>
       <div className='d-flex justify-content-center h-100 w-60 align-items-center'>
         <div
@@ -44,8 +41,6 @@ const VerifyAccount = ({ history }) => {
         </div>
       </div>
     </div>
-  ) : (
-    <Redirect to='/' />
   );
 };
 

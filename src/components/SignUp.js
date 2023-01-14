@@ -25,7 +25,7 @@ const SignUp = ({ history }) => {
         });
 
         const actionCodeSettings = {
-          url: `http://react-firebase-auth-task.vercel.app/verify?email=${email.value.toLowerCase()}`,
+          url: `https://react-firebase-auth-task.vercel.app/verify?email=${email.value.toLowerCase()}`,
           handleCodeInApp: true,
         };
 

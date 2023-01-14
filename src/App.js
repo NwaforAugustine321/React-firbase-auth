@@ -1,19 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { store } from './store/store';
 import Home from './components/Home';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import VerifyAccount from './components/VerifyEmail';
-import AccountOTPVerification from './components/MultiFactorAuth';
+import { Provider } from 'react-redux';
 import { AuthProvider } from './container/Auth';
 import PrivateRoute from './routes/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
+import AccountOTPVerification from './components/MultiFactorAuth';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <div>
+    <Provider store={store}>
+      <AuthProvider>
+        <Router>
           <PrivateRoute exact path='/' component={Home} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/signup' component={SignUp} />
@@ -23,10 +25,10 @@ const App = () => {
             component={AccountOTPVerification}
           />
           <Route exact path='/verify*' component={VerifyAccount} />
-        </div>
-      </Router>
-      <ToastContainer />
-    </AuthProvider>
+        </Router>
+        <ToastContainer />
+      </AuthProvider>
+    </Provider>
   );
 };
 

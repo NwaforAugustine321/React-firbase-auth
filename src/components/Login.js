@@ -1,8 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { withRouter } from 'react-router';
-import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../container/Auth';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { AuthContext } from '../container/Auth';
+import { updateUser } from '../store/store';
+import React, { useContext, useState, useEffect } from 'react';
+
 import {
   getAuth,
   RecaptchaVerifier,
@@ -15,7 +17,8 @@ import {
 
 const Login = ({ history }) => {
   const auth = getAuth();
-  const path = useHistory();
+  const dispatch = useDispatch();
+
   const [reload, setReload] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
@@ -64,12 +67,24 @@ const Login = ({ history }) => {
             recaptchaVerifier
           );
 
+          dispatch(
+            updateUser({
+              status: 'OPT-PROCESSING',
+              user: {
+                displayName: '',
+                email: '',
+                emailVerified: '',
+              },
+            })
+          );
+
           window.location.assign(`/otp/${id}/login`);
 
           window.localStorage.setItem(
             'sessionErrorResolver',
             JSON.stringify(error)
           );
+
           recaptchaVerifier.clear();
         } else {
           // Unsupported second factor.
@@ -97,6 +112,16 @@ const Login = ({ history }) => {
         recaptchaVerifier
       );
 
+      dispatch(
+        updateUser({
+          status: 'OPT-PROCESSING',
+          user: {
+            displayName: '',
+            email: '',
+            emailVerified: '',
+          },
+        })
+      );
       window.location.assign(`/otp/${id}/signup`);
       recaptchaVerifier.clear();
       setReload(true);

@@ -1,9 +1,10 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import { useContext } from 'react';
 import { withRouter } from 'react-router';
 import { useParams } from 'react-router';
-import { AuthContext } from '../container/Auth';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../store/store';
+import { useSelector } from 'react-redux';
 import {
   PhoneAuthProvider,
   multiFactor,
@@ -11,12 +12,14 @@ import {
   getMultiFactorResolver,
   getAuth,
 } from 'firebase/auth';
-import { Redirect } from 'react-router';
 
 const AccountOTPVerification = ({ history }) => {
+  const auth = getAuth();
   const params = useParams();
   const { vfid, type } = params;
-  const { currentUser } = useContext(AuthContext);
+  const userAuth = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const handleOTp = (event) => {
     event.preventDefault();
@@ -31,26 +34,44 @@ const AccountOTPVerification = ({ history }) => {
 
       if (type === 'login') {
         const resolver = getMultiFactorResolver(
-          getAuth(),
+          auth,
           JSON.parse(window.localStorage.getItem('sessionErrorResolver'))
         );
         await resolver.resolveSignIn(multiFactorAssertion);
-        window.location.assign('/');
-      } else {
-        await multiFactor(currentUser).enroll(
-          multiFactorAssertion,
-          currentUser.displayName
+        dispatch(
+          updateUser({
+            status: 'ACTIVE',
+            user: {
+              displayName: auth.currentUser.displayName,
+              email: auth.currentUser.email,
+              emailVerified: auth.currentUser.emailVerified,
+            },
+          })
         );
-        window.location.assign('/');
+        history.push('/');
+      } else {
+        await multiFactor(userAuth.user).enroll(
+          multiFactorAssertion,
+          userAuth.user.displayName
+        );
+        dispatch(
+          updateUser({
+            status: 'ACTIVE',
+            user: {
+              displayName: auth.currentUser.displayName,
+              email: auth.currentUser.email,
+              emailVerified: auth.currentUser.emailVerified,
+            },
+          })
+        );
+        history.push('/');
       }
     } catch (error) {
       toast(error.message);
     }
   };
 
-  return !currentUser || !currentUser.emailVerified ? (
-    <Redirect to='/login' />
-  ) : (
+  return (
     <div className='container-sm vh-100'>
       <div className='d-flex justify-content-center h-100 w-60 align-items-center'>
         <div

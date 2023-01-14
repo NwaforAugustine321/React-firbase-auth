@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from '../container/Auth';
 
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
-  const { currentUser } = useContext(AuthContext);
+  const userAuth = useSelector((state) => state.auth);
+
   return (
     <Route
       {...rest}
       render={(routeProps) =>
-        !!currentUser ? (
+        userAuth.status === 'ACTIVE' && userAuth.user.emailVerified ? (
           <RouteComponent {...routeProps} />
         ) : (
           <Redirect to={'/login'} />

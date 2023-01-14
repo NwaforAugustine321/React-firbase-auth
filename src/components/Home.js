@@ -1,10 +1,14 @@
 import React from 'react';
-import app from '../firbaseConfig';
-import { useContext } from 'react';
-import { AuthContext } from '../container/Auth';
+import { useStore } from 'react-redux';
+import { getAuth } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../store/store';
 
 const Home = () => {
-  const { currentUser } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const userAuth = useStore().getState();
+
+  const currentUser = userAuth.auth.user;
 
   return (
     <div className='container-sm vh-100'>
@@ -16,16 +20,16 @@ const Home = () => {
           <h1>Home</h1>
 
           <form style={{ width: '60%' }}>
-            <fieldset disabled className='mb-3'>
+            <fieldset className='mb-3' disabled={true}>
               <input
-                disable={true}
+                disabled={true}
                 type='text'
                 className='form-control mb-3'
                 placeholder={currentUser.displayName}
               />
 
               <input
-                disable={true}
+                disabled={true}
                 type='email'
                 className='form-control'
                 placeholder={currentUser.email}
@@ -34,7 +38,20 @@ const Home = () => {
 
             <button
               className='btn btn-primary'
-              onClick={() => app.auth().signOut()}
+              type='button'
+              onClick={() => {
+                dispatch(
+                  updateUser({
+                    status: 'UnAuthorize',
+                    user: {
+                      displayName: '',
+                      email: '',
+                      emailVerified: '',
+                    },
+                  })
+                );
+                getAuth().signOut();
+              }}
             >
               Sign out
             </button>
