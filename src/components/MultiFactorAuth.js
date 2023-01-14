@@ -52,7 +52,7 @@ const AccountOTPVerification = ({ history }) => {
       } else {
         await multiFactor(auth.currentUser).enroll(
           multiFactorAssertion,
-          userAuth.user.displayName
+          auth.currentUser.displayName
         );
         dispatch(
           updateUser({
