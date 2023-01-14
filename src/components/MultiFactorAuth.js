@@ -50,7 +50,7 @@ const AccountOTPVerification = ({ history }) => {
         );
         history.push('/');
       } else {
-        await multiFactor(userAuth.user).enroll(
+        await multiFactor(auth.currentUser).enroll(
           multiFactorAssertion,
           userAuth.user.displayName
         );
