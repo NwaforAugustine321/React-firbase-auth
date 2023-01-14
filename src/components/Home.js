@@ -5,10 +5,11 @@ import { useDispatch } from 'react-redux';
 import { updateUser } from '../store/store';
 
 const Home = () => {
+
   const dispatch = useDispatch();
   const userAuth = useStore().getState();
-
   const currentUser = userAuth.auth.user;
+  
 
   return (
     <div className='container-sm vh-100'>

@@ -17,8 +17,8 @@ import {
 
 const Login = ({ history }) => {
   const auth = getAuth();
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const { currentUser } = useContext(AuthContext);
@@ -37,6 +37,7 @@ const Login = ({ history }) => {
     );
     setReload(false);
   }, [reload, auth]);
+  
 
   const handleLogin = async (event) => {
     event.preventDefault();

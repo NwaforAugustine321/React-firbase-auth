@@ -17,9 +17,8 @@ const AccountOTPVerification = ({ history }) => {
   const auth = getAuth();
   const params = useParams();
   const { vfid, type } = params;
-  const userAuth = useSelector((state) => state.auth);
-
   const dispatch = useDispatch();
+  const userAuth = useSelector((state) => state.auth);
 
   const handleOTp = (event) => {
     event.preventDefault();
