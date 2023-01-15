@@ -1,0 +1,10 @@
+
+@media  (max-width: 1024px) {
+  form {
+    width: 100% !important;
+    
+  }
+  .inner-container {
+    width: 100% !important;
+  }
+}

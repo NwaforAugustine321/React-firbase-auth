@@ -72,9 +72,9 @@ const AccountOTPVerification = ({ history }) => {
 
   return (
     <div className='container-sm vh-100'>
-      <div className='d-flex justify-content-center h-100 w-60 align-items-center'>
+      <div className='d-flex justify-content-center h-100 w-60 align-items-center inner-container'>
         <div
-          className='d-flex align-items-center flex-column'
+          className='d-flex align-items-center flex-column inner-container'
           style={{ width: '60%' }}
         >
           <h1>Verify Account</h1>
